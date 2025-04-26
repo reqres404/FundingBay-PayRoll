@@ -19,17 +19,12 @@ const writeEmployees = async (employees) => {
 const validateEmployee = (employee) => {
   const errors = [];
   
-  if (employee.status !== 'Active') {
-    errors.push('Employee must be active');
+  if (!['Active', 'Terminated', 'OnBoarding'].includes(employee.status)) {
+    errors.push('Status must be Active, Terminated, or OnBoarding');
   }
   
   if (!/^\d{10,12}$/.test(employee.bankAccount)) {
     errors.push('Bank account must be 10-12 digits');
-  }
-  
-  const netPay = employee.grossPay - (employee.unpaidLeaveDays * 100);
-  if (netPay !== employee.netPay) {
-    errors.push('Net pay calculation is incorrect');
   }
   
   return errors;

@@ -25,5 +25,23 @@
     "grossPay": 5000,
     "unpaidLeaveDays": 2,
     "netPay": 4800
+  },
+  {
+    "id": "1745693669942",
+    "name": "Test1",
+    "status": "Active",
+    "bankAccount": "12345678910",
+    "grossPay": 4500,
+    "unpaidLeaveDays": 2,
+    "netPay": 4300
+  },
+  {
+    "id": "1745694504531",
+    "name": "Test3",
+    "status": "OnBoarding",
+    "bankAccount": "213141515613",
+    "grossPay": 4000,
+    "unpaidLeaveDays": 2,
+    "netPay": 3800
   }
 ]

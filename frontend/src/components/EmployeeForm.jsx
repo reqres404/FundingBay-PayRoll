@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 
-function EmployeeForm({ employee, onSubmit, onClose }) {
+function EmployeeForm({ employee, onSubmit, onClose, isDarkMode }) {
   const [formData, setFormData] = useState({
     name: '',
     status: 'Active',
@@ -33,7 +33,7 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
     // Log the raw form data
     console.log('Raw form data:', formData);
     
-    // Ensure data is in the correct format
+    // Format the data
     const data = {
       name: formData.name.trim(),
       status: formData.status,
@@ -55,8 +55,8 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
       validationErrors.push('Bank account must be 10-12 digits');
     }
 
-    if (data.status !== 'Active' && data.status !== 'Inactive') {
-      validationErrors.push('Status must be either Active or Inactive');
+    if (!['Active', 'Terminated', 'OnBoarding'].includes(data.status)) {
+      validationErrors.push('Status must be Active, Terminated, or OnBoarding');
     }
 
     if (isNaN(data.grossPay) || data.grossPay <= 0) {
@@ -76,8 +76,6 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
     // Log before submission
     console.log('Submitting data:', data);
     
-    // For new employee, pass null as id and data as second argument
-    // For editing, pass employee.id and data
     if (employee) {
       onSubmit(employee.id, data);
     } else {
@@ -87,13 +85,13 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white rounded-lg p-8 max-w-md w-full">
+      <div className={`${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'} rounded-lg p-8 max-w-md w-full`}>
         <h2 className="text-2xl font-bold mb-6">
           {employee ? 'Edit Employee' : 'Add Employee'}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="name" className="block text-sm font-medium">
               Name
             </label>
             <input
@@ -103,12 +101,15 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
               required
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm
+                ${isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'}`}
             />
           </div>
 
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="status" className="block text-sm font-medium">
               Status
             </label>
             <select
@@ -117,15 +118,19 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
               required
               value={formData.status}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm
+                ${isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'}`}
             >
               <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
+              <option value="Terminated">Terminated</option>
+              <option value="OnBoarding">OnBoarding</option>
             </select>
           </div>
 
           <div>
-            <label htmlFor="bankAccount" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="bankAccount" className="block text-sm font-medium">
               Bank Account
             </label>
             <input
@@ -136,12 +141,15 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
               pattern="\d{10,12}"
               value={formData.bankAccount}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm
+                ${isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'}`}
             />
           </div>
 
           <div>
-            <label htmlFor="grossPay" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="grossPay" className="block text-sm font-medium">
               Gross Pay
             </label>
             <input
@@ -152,12 +160,15 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
               min="0"
               value={formData.grossPay}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm
+                ${isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'}`}
             />
           </div>
 
           <div>
-            <label htmlFor="unpaidLeaveDays" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="unpaidLeaveDays" className="block text-sm font-medium">
               Unpaid Leave Days
             </label>
             <input
@@ -168,7 +179,10 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
               min="0"
               value={formData.unpaidLeaveDays}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+              className={`mt-1 block w-full rounded-md shadow-sm sm:text-sm
+                ${isDarkMode 
+                  ? 'bg-gray-700 border-gray-600 text-white' 
+                  : 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'}`}
             />
           </div>
 
@@ -176,7 +190,10 @@ function EmployeeForm({ employee, onSubmit, onClose }) {
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md text-sm font-medium hover:bg-gray-300"
+              className={`px-4 py-2 rounded-md text-sm font-medium
+                ${isDarkMode 
+                  ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
             >
               Cancel
             </button>
