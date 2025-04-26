@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "name": "John Doe",
+    "status": "Active",
+    "bankAccount": "1234567890",
+    "grossPay": 5000,
+    "unpaidLeaveDays": 2,
+    "netPay": 4800
+  },
+  {
+    "id": "2",
+    "name": "Jane Smith",
+    "status": "Active",
+    "bankAccount": "9876543210",
+    "grossPay": 6000,
+    "unpaidLeaveDays": 0,
+    "netPay": 6000
+  },
+  {
+    "id": "1745692675104",
+    "name": "John Smith",
+    "status": "Active",
+    "bankAccount": "1234567890",
+    "grossPay": 5000,
+    "unpaidLeaveDays": 2,
+    "netPay": 4800
+  }
+]
